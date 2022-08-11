@@ -1,11 +1,13 @@
-﻿using ConsoleAppFoodTelegrammBot.Db;
-using ConsoleAppFoodTelegrammBot.Db.Model;
+﻿using ConsoleAppFoodTelegrammBot.Bot;
 
-DbManager dbManager = DbManager.GetInstance();
+Bot bot = new Bot();
+bot.Start();
 
-List<TypeDish> typesDishes = dbManager.TableTypesDishes.GetAllTypesDishes();
+Console.WriteLine($"Bot @{bot.GetBotName()} started");
 
-foreach (TypeDish typeDish in typesDishes)
-{
-    Console.WriteLine($"id:{typeDish.Id} name:{typeDish.Name}");
-}
+Console.WriteLine("Press enter for stop");
+Console.ReadKey();
+
+bot.Stop();
+
+Console.WriteLine("Bot stopped");

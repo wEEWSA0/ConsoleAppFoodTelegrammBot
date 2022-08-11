@@ -1,3 +1,4 @@
+using System.Data.Common;
 using ConsoleAppFoodTelegrammBot.Db.Connection;
 using ConsoleAppFoodTelegrammBot.Db.Model;
 using Npgsql;
@@ -8,9 +9,9 @@ public class TableTypesDishes
 {
     private NpgsqlConnection _connection;
 
-    public TableTypesDishes()
+    public TableTypesDishes(NpgsqlConnection connection)
     {
-        _connection = DbConnector.GetConnection();
+        _connection = connection;
     }
 
     public List<TypeDish> GetAllTypesDishes()
@@ -34,6 +35,8 @@ public class TableTypesDishes
 
             typesDishes.Add(typeDish);
         }
+        
+        dataReader.Close();
 
         return typesDishes;
     }

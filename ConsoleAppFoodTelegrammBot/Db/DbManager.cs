@@ -1,4 +1,6 @@
+using ConsoleAppFoodTelegrammBot.Db.Connection;
 using ConsoleAppFoodTelegrammBot.Db.Table;
+using Npgsql;
 
 namespace ConsoleAppFoodTelegrammBot.Db;
 
@@ -6,11 +8,14 @@ public class DbManager
 {
     private static DbManager _dbManager = null;
 
-    public TableTypesDishes TableTypesDishes { private set; get; }
+    private NpgsqlConnection _connection;
 
+    public TableTypesDishes TableTypesDishes { private set; get; }
+    
     private DbManager()
     {
-        TableTypesDishes = new TableTypesDishes();
+        _connection = DbConnector.GetConnection();
+        TableTypesDishes = new TableTypesDishes(_connection);
     }
 
     public static DbManager GetInstance()
@@ -21,5 +26,10 @@ public class DbManager
         }
 
         return _dbManager;
+    }
+
+    public void CloseConnection()
+    {
+        _connection.Close();
     }
 }
