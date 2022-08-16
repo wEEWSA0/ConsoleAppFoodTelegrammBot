@@ -35,7 +35,7 @@ public class TableTypesDishes
 
             typesDishes.Add(typeDish);
         }
-        
+
         dataReader.Close();
 
         return typesDishes;

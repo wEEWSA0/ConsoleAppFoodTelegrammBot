@@ -15,7 +15,7 @@ public class BotLogic
         _dbManager = DbManager.GetInstance();
     }
 
-    public Task<Message> ProcessMessageText(ITelegramBotClient botClient, string requestMessageText, ChatId chatId,
+    public Task<Message> ProcessTextMessage(ITelegramBotClient botClient, string requestMessageText, ChatId chatId,
         CancellationToken cancellationToken)
     {
         switch (requestMessageText)
@@ -23,9 +23,41 @@ public class BotLogic
             case "/typesDishes": return SendTypesDishes(botClient, chatId, cancellationToken);
             case "/help": return GetHelp(botClient, chatId, cancellationToken);
             case "/hide": return HideKeyBoard(botClient, chatId, cancellationToken);
+            case "/inline": return SendInlineKeyBoard(botClient, chatId, cancellationToken);
             default: return GetDefault(botClient, chatId, cancellationToken);
         }
     }
+
+    public Task<Message> ProcessCallBackMessage(ITelegramBotClient botClient, ChatId chatId, int messageId,
+        string data,
+        CancellationToken cancellationToken)
+    {
+        string text = "callback";
+
+        switch (data)
+        {
+            case "11":
+                text += "1111111";
+                break;
+            case "22":
+                text += "222222";
+                break;
+        }
+
+        return botClient.EditMessageTextAsync(
+            chatId: chatId,
+            messageId: messageId,
+            text: "sdfsdfsdf",
+            cancellationToken: cancellationToken
+        );
+
+
+        // return botClient.SendTextMessageAsync(
+        //     chatId: chatId,
+        //     text: text,
+        //     cancellationToken: cancellationToken);
+    }
+
 
     private Task<Message> SendTypesDishes(ITelegramBotClient botClient, ChatId chatId,
         CancellationToken cancellationToken)
@@ -79,6 +111,32 @@ public class BotLogic
         return botClient.SendTextMessageAsync(
             chatId: chatId,
             text: responseText,
+            cancellationToken: cancellationToken);
+    }
+
+    private Task<Message> SendInlineKeyBoard(ITelegramBotClient botClient, ChatId chatId,
+        CancellationToken cancellationToken)
+    {
+        InlineKeyboardMarkup inlineKeyboard = new(new[]
+        {
+            // first row
+            new[]
+            {
+                InlineKeyboardButton.WithCallbackData(text: "1.1", callbackData: "11"),
+                InlineKeyboardButton.WithCallbackData(text: "1.2", callbackData: "12"),
+            },
+            // second row
+            new[]
+            {
+                InlineKeyboardButton.WithCallbackData(text: "2.1", callbackData: "21"),
+                InlineKeyboardButton.WithCallbackData(text: "2.2", callbackData: "22"),
+            },
+        });
+
+        return botClient.SendTextMessageAsync(
+            chatId: chatId,
+            text: "A message with an inline keyboard markup",
+            replyMarkup: inlineKeyboard,
             cancellationToken: cancellationToken);
     }
 }

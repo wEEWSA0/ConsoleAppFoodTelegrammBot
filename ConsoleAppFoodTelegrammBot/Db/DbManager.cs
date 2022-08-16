@@ -8,14 +8,12 @@ public class DbManager
 {
     private static DbManager _dbManager = null;
 
-    private NpgsqlConnection _connection;
-
     public TableTypesDishes TableTypesDishes { private set; get; }
-    
+
     private DbManager()
     {
-        _connection = DbConnector.GetConnection();
-        TableTypesDishes = new TableTypesDishes(_connection);
+        NpgsqlConnection connection = DbConnector.GetInstance().Connection;
+        TableTypesDishes = new TableTypesDishes(connection);
     }
 
     public static DbManager GetInstance()
@@ -30,6 +28,6 @@ public class DbManager
 
     public void CloseConnection()
     {
-        _connection.Close();
+        DbConnector.GetInstance().Connection.Close();
     }
 }

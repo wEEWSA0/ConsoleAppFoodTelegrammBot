@@ -1,30 +1,47 @@
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace ConsoleAppFoodTelegrammBot.Bot;
 
 public class BotHandlers
 {
     private static BotLogic _botLogic = new BotLogic();
+    private static Random _random = new Random();
+
+    private static List<string> jokes = new List<string>()
+    {
+        "шутка1", "шутка5", "шутка4", "шутка3", "шутка2"
+    };
+
+    private static int _number = 10;
 
     public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
-        if (update.Message == null)
+        // switch (update.Type)
+        // {
+        //     case UpdateType.Message:
+        //         break;
+        //
+        //     case UpdateType.CallbackQuery:
+        //         break;
+        // }
+
+        if (update.CallbackQuery != null)
         {
-            return;
+            await _botLogic.ProcessCallBackMessage(botClient, update.CallbackQuery.Message.Chat.Id,
+                update.CallbackQuery.Message.MessageId, update.CallbackQuery.Data, cancellationToken);
         }
 
-        if (update.Message.Text == null)
+        if (update.Message != null && update.Message.Text != null)
         {
-            return;
+            string requestMessageText = update.Message.Text;
+            ChatId chatId = update.Message.Chat.Id;
+
+            await _botLogic.ProcessTextMessage(botClient, requestMessageText, chatId, cancellationToken);
         }
-
-        string requestMessageText = update.Message.Text;
-        ChatId chatId = update.Message.Chat.Id;
-
-        await _botLogic.ProcessMessageText(botClient, requestMessageText, chatId, cancellationToken);
     }
 
 

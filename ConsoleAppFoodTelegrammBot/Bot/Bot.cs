@@ -1,7 +1,6 @@
 using ConsoleAppFoodTelegrammBot.Db;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
-using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 namespace ConsoleAppFoodTelegrammBot.Bot;
@@ -23,7 +22,7 @@ public class Bot
         {
             AllowedUpdates = Array.Empty<UpdateType>()
         };
-
+        
         _botClient.StartReceiving(
             BotHandlers.HandleUpdateAsync,
             BotHandlers.HandlePollingErrorAsync,
