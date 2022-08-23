@@ -24,8 +24,8 @@ public class Bot
         };
         
         _botClient.StartReceiving(
-            BotHandlers.HandleUpdateAsync,
-            BotHandlers.HandlePollingErrorAsync,
+            BotHandlersInlineKeyboardMenu.HandleUpdateAsync,
+            BotHandlersInlineKeyboardMenu.HandlePollingErrorAsync,
             receiverOptions,
             _cancellationTokenSource.Token
         );
