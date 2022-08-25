@@ -1,20 +1,12 @@
-using System.Text.RegularExpressions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot.Types.InputFiles;
 
 namespace ConsoleAppFoodTelegrammBot.Bot;
 
-public class BotHandlersInlineKeyboardMenu
+public class BotHandlersSendPhotoFromComputer
 {
-    private BotLogicInlineKeyboardMenu _botLogicInlineKeyboardMenu;
-
-    public BotHandlersInlineKeyboardMenu(BotLogicInlineKeyboardMenu botLogicInlineKeyboardMenu)
-    {
-        _botLogicInlineKeyboardMenu = botLogicInlineKeyboardMenu;
-    }
-
     public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
@@ -25,17 +17,17 @@ public class BotHandlersInlineKeyboardMenu
 
             if (requestMessageText == "/start")
             {
-                await _botLogicInlineKeyboardMenu.FirstSendMainMenu(botClient, chatId, cancellationToken);
-            }
-        }
-        else if (update.CallbackQuery != null)
-        {
-            ChatId chatId = update.CallbackQuery.Message.Chat.Id;
-            int messageId = update.CallbackQuery.Message.MessageId;
-            string callBackData = update.CallbackQuery.Data;
+                InputOnlineFile file = new InputOnlineFile(new FileStream("smile.png", FileMode.Open));
 
-            await _botLogicInlineKeyboardMenu.CallMethodByName(callBackData, botClient, chatId, messageId,
-                cancellationToken);
+                await botClient.SendPhotoAsync(
+                    chatId: chatId,
+                    photo: file,
+                    cancellationToken: cancellationToken);
+                // await botClient.SendTextMessageAsync(
+                //     chatId: chatId,
+                //     text: "Фото",
+                //     cancellationToken: cancellationToken);
+            }
         }
     }
 

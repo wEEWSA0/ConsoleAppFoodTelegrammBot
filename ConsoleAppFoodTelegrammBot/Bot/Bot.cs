@@ -22,10 +22,14 @@ public class Bot
         {
             AllowedUpdates = Array.Empty<UpdateType>()
         };
+
+        //BotHandlersInlineKeyboardMenu botHandlersInlineKeyboardMenu = new BotHandlersInlineKeyboardMenu(new BotLogicInlineKeyboardMenu());
+
+        BotHandlersSendPhotoFromComputer handlersSendPhotoFromComputer = new BotHandlersSendPhotoFromComputer();
         
         _botClient.StartReceiving(
-            BotHandlersInlineKeyboardMenu.HandleUpdateAsync,
-            BotHandlersInlineKeyboardMenu.HandlePollingErrorAsync,
+            handlersSendPhotoFromComputer.HandleUpdateAsync,
+            handlersSendPhotoFromComputer.HandlePollingErrorAsync,
             receiverOptions,
             _cancellationTokenSource.Token
         );
