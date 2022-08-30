@@ -1,3 +1,4 @@
+using ConsoleAppFoodTelegrammBot.Bot.StateMachine;
 using ConsoleAppFoodTelegrammBot.Db;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
@@ -25,11 +26,13 @@ public class Bot
 
         //BotHandlersInlineKeyboardMenu botHandlersInlineKeyboardMenu = new BotHandlersInlineKeyboardMenu(new BotLogicInlineKeyboardMenu());
 
-        BotHandlersSendPhotoFromComputer handlersSendPhotoFromComputer = new BotHandlersSendPhotoFromComputer();
+        //BotHandlersSendPhotoFromComputer handlersSendPhotoFromComputer = new BotHandlersSendPhotoFromComputer();
+
+        BotHandlersStateMachineExample botHandlersStateMachineExample = new BotHandlersStateMachineExample();
         
         _botClient.StartReceiving(
-            handlersSendPhotoFromComputer.HandleUpdateAsync,
-            handlersSendPhotoFromComputer.HandlePollingErrorAsync,
+            botHandlersStateMachineExample.HandleUpdateAsync,
+            botHandlersStateMachineExample.HandlePollingErrorAsync,
             receiverOptions,
             _cancellationTokenSource.Token
         );
