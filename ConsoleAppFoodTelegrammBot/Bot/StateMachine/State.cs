@@ -19,7 +19,14 @@ public class State
 
     public string GetCurrentStateName()
     {
-        return _currentState.ToString();
+        if (_currentState != null)
+        {
+            return _currentState.ToString();
+        }
+        else
+        {
+            return "default";
+        }
     }
     
     public void SetState(StateVariant state)
